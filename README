@@ -1,0 +1,11 @@
+epics_gateway
+
+This module installs and configures the EPICS Channel Access Gateway.
+
+License
+-------
+
+
+Contact
+-------
+Author: Martin Konrad <konrad at frib.msu.edu>
