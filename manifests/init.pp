@@ -36,17 +36,21 @@
 # Michigan State University, East-Lansing, MI, USA
 #
 class epics_gateway(
+  $package_name   = $epics_gateway::params::package_name,
+  $package_ensure = $epics_gateway::params::package_ensure,
   $service_enable = $epics_gateway::params::service_enable,
   $service_ensure = $epics_gateway::params::service_ensure,
   $service_name   = $epics_gateway::params::service_name,
 ) inherits epics_gateway::params {
+  class { '::epics_gateway::install':
+    package_name   => $package_name,
+    package_ensure => $package_ensure,
+  }
 
   # Anchor this as per #8040 - this ensures that classes won't float off and
   # mess everything up.  You can read about this at:
   # http://docs.puppetlabs.com/puppet/2.7/reference/lang_containment.html#known-issues
   anchor { 'epics_gateway::begin': } ->
-  class { '::epics_gateway::install': } ->
-  class { '::epics_gateway::config': } ~>
-  class { '::epics_gateway::service': } ->
+  Class['::epics_gateway::install'] ->
   anchor { 'epics_gateway::end': }
 }

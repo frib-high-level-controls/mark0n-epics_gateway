@@ -1,0 +1,80 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          cagateway-<%= @name %>
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start EPICS PV gateway daemon in procServ
+# Description:       Enable EPICS PV Gateway, which allows access to
+#                    PVs in other subnets from 192.168.2.xxx.
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PROCSERV=/usr/bin/procServ
+GATEWAY=/usr/bin/cagateway
+NAME=cagateway_<%= @name %>
+DESC="PV Gateway for 192.168.2.xxx"
+PREFIX="gateway2"
+
+test -x $DAEMON || exit 0
+
+set -e
+ 
+. /lib/lsb/init-functions
+
+PROCSERV_PORT=<%= @console_port %>
+LOG_FILE=/var/log/${NAME}.log
+
+if test -f /etc/default/$NAME; then
+    . /etc/default/$NAME
+fi
+
+export LOG_FILE
+
+GATEWAY_OPTS="-sip <%= @server_ip %> -cip <%= @client_ip %> -signore <%= @ignore_ips.join(' ') %> -home /epics/$NAME/ -pvlist <%= @pv_list %> -access <%= @access_file %> -archive -no_cache -log $LOG_FILE -prefix $PREFIX -caputlog localhost:7004 <%= @gw_params %>"
+PROCSERV_OPTS="--quiet --pidfile /var/run/$NAME.pid"
+
+check_status() {
+  if [ "$1" = "-q" ];then
+    status_of_proc -p "$PID" "procServ" "$IOC" 2>&1 >/dev/null
+  else
+    status_of_proc -p "$PID" "procServ" "$IOC"
+  fi
+  return $?
+}
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        start-stop-daemon --start --pidfile /var/run/$NAME.pid --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop --pidfile /var/run/$NAME.pid --exec $PROCSERV
+        rm -f /var/run/$NAME.pid
+        echo "$NAME."
+        ;;
+  status)
+        echo -n "Status of gateway $NAME : "
+        check_status
+        exit $?
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC: "
+        start-stop-daemon --stop --pidfile /var/run/$NAME.pid --exec $PROCSERV
+        rm -f /var/run/$NAME.pid
+        sleep 1
+        start-stop-daemon --start --pidfile /var/run/$NAME.pid --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
+        echo "$NAME."
+        ;;
+  *)
+        N=/etc/init.d/$NAME
+        # echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
