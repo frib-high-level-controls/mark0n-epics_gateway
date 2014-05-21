@@ -11,6 +11,9 @@ class epics_gateway::params {
   $command_file   = '/etc/epics/${NAME}/command'
   $archive        = true
   $no_cache       = true
+  $caputlog       = false
+  $caputlog_host  = 'localhost'
+  $caputlog_port  = 7004
 
   case $::osfamily {
     'Debian': {

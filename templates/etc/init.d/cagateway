@@ -49,7 +49,14 @@ else
   NO_CACHE_OPT=''
 fi
 
-GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE $COMMAND_FILE_OPT $ARCHIVE_OPT $NO_CACHE_OPT -log $LOG_FILE -prefix $PREFIX $PARAMS"
+if [ -n "$CAPUTLOG_HOST" ] && [ -n "$CAPUTLOG_PORT" ]
+then
+  CAPUTLOG_OPT="-caputlog ${CAPUTLOG_HOST}:$CAPUTLOG_PORT"
+else
+  CAPUTLOG_OPT=''
+fi
+
+GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE $COMMAND_FILE_OPT $ARCHIVE_OPT $NO_CACHE_OPT $CAPUTLOG_OPT -log $LOG_FILE -prefix $PREFIX $PARAMS"
 PROCSERV_OPTS="--quiet --pidfile /var/run/${NAME}/pid"
 
 check_status() {

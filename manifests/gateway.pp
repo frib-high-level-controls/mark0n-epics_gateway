@@ -13,6 +13,9 @@ define epics_gateway::gateway(
   $command_file   = $epics_gateway::params::command_file,
   $archive        = $epics_gateway::params::archive,
   $no_cache       = $epics_gateway::params::no_cache,
+  $caputlog       = $epics_gateway::params::caputlog,
+  $caputlog_host  = $epics_gateway::params::caputlog_host,
+  $caputlog_port  = $epics_gateway::params::caputlog_port,
 ) {
   validate_string($service_ensure)
   validate_bool($service_enable)
@@ -23,6 +26,8 @@ define epics_gateway::gateway(
   validate_string($gw_params)
   validate_bool($archive)
   validate_bool($no_cache)
+  validate_bool($caputlog)
+  validate_string($caputlog_host)
 
   if !($service_ensure in [ 'running', 'stopped' ]) {
     fail('service_ensure parameter must be running or stopped')
@@ -38,6 +43,10 @@ define epics_gateway::gateway(
 
   if !is_ip_address($client_ip) {
     fail('client_ip is not a valid ip address')
+  }
+
+  if !is_integer($caputlog_port) or $caputlog_port < 0 or $caputlog_port > 65535 {
+    fail('caputlog_port is not a valid port number')
   }
 
   file { "/etc/default/cagateway-${name}":
