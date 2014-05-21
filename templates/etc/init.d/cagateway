@@ -10,11 +10,10 @@
 #                    PVs in other subnets from 192.168.2.xxx.
 ### END INIT INFO
 
+NAME=$(basename $0)
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 PROCSERV=/usr/bin/procServ
 GATEWAY=/usr/bin/cagateway
-NAME=cagateway_<%= @name %>
-DESC="PV Gateway for 192.168.2.xxx"
 PREFIX="gateway2"
 
 test -x $DAEMON || exit 0
@@ -23,16 +22,14 @@ set -e
  
 . /lib/lsb/init-functions
 
-PROCSERV_PORT=<%= @console_port %>
-LOG_FILE=/var/log/${NAME}.log
-
 if test -f /etc/default/$NAME; then
     . /etc/default/$NAME
 fi
 
+echo $SERVER_IP
 export LOG_FILE
 
-GATEWAY_OPTS="-sip <%= @server_ip %> -cip <%= @client_ip %> -signore <%= @ignore_ips.join(' ') %> -home /epics/$NAME/ -pvlist <%= @pv_list %> -access <%= @access_file %> -archive -no_cache -log $LOG_FILE -prefix $PREFIX -caputlog localhost:7004 <%= @gw_params %>"
+GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE -archive -no_cache -log $LOG_FILE -prefix $PREFIX -caputlog localhost:7004 <%= @gw_params %>"
 PROCSERV_OPTS="--quiet --pidfile /var/run/$NAME.pid"
 
 check_status() {

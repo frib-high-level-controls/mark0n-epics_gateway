@@ -1,0 +1,9 @@
+DESC="PV Gateway for 192.168.2.xxx"
+SERVER_IP=<%= @server_ip %>
+CLIENT_IP=<%= @client_ip %>
+IGNORE_IPS="<%= @ignore_ips.join(' ') %>"
+HOME_DIR="/epics/${NAME}/"
+PV_LIST_FILE=<%= @pv_list %>
+ACCESS_SECURITY_FILE=<%= @access_file %>
+LOG_FILE=/var/log/${NAME}.log
+PROCSERV_PORT=<%= @console_port %>

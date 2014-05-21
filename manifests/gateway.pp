@@ -36,6 +36,13 @@ define epics_gateway::gateway(
     fail('client_ip is not a valid ip address')
   }
 
+  file { "/etc/default/cagateway-${name}":
+    ensure  => file,
+    content => template("${module_name}/etc/default/cagateway"),
+    owner   => 'root',
+    mode    => '0644',
+  }
+
   file { "/etc/init.d/cagateway-${name}":
     ensure  => file,
     content => template("${module_name}/etc/init.d/cagateway"),
@@ -50,7 +57,10 @@ define epics_gateway::gateway(
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => true,
-      subscribe  => File["/etc/init.d/cagateway-${name}"],
+      subscribe  => [
+        File["/etc/init.d/cagateway-${name}"],
+        File["/etc/default/cagateway-${name}"],
+      ],
     }
   }
 }
