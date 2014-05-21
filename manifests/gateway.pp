@@ -19,6 +19,7 @@ define epics_gateway::gateway(
   $caputlog       = $epics_gateway::params::caputlog,
   $caputlog_host  = $epics_gateway::params::caputlog_host,
   $caputlog_port  = $epics_gateway::params::caputlog_port,
+  $prefix         = $epics_gateway::params::prefix,
 ) {
   validate_string($service_ensure)
   validate_bool($service_enable)
@@ -32,6 +33,7 @@ define epics_gateway::gateway(
   validate_bool($no_cache)
   validate_bool($caputlog)
   validate_string($caputlog_host)
+  validate_string($prefix)
 
   if !($service_ensure in [ 'running', 'stopped' ]) {
     fail('service_ensure parameter must be running or stopped')

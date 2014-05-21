@@ -17,6 +17,8 @@ class epics_gateway::params {
   $caputlog       = false
   $caputlog_host  = 'localhost'
   $caputlog_port  = 7004
+  $tmp            = '${NAME}'
+  $prefix         = "${::hostname}-${tmp}"
 
   case $::osfamily {
     'Debian': {

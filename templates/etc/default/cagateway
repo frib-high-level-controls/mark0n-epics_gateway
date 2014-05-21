@@ -14,4 +14,5 @@ ARCHIVE=<%= @archive %>
 NO_CACHE=<%= @no_cache %>
 CAPUTLOG_HOST=<%= @caputlog_host %>
 CAPUTLOG_PORT=<%= @caputlog_port %>
+PREFIX="<%= @prefix %>"
 PARAMS="<%= @gw_params %>"
