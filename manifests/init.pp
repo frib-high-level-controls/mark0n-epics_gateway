@@ -52,5 +52,6 @@ class epics_gateway(
   # http://docs.puppetlabs.com/puppet/2.7/reference/lang_containment.html#known-issues
   anchor { 'epics_gateway::begin': } ->
   Class['::epics_gateway::install'] ->
+  class { '::epics_gateway::config': } ->
   anchor { 'epics_gateway::end': }
 }
