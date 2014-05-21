@@ -1,7 +1,9 @@
+# Configure all non-instance specific things.
+#
 class epics_gateway::config() {
   user { 'cagateway':
-    ensure => present,
-    system => true,
+    ensure  => present,
+    system  => true,
     require => Class['::epics_gateway::install'],
   }
 

@@ -1,10 +1,18 @@
-epics_gateway
-
 This module installs and configures the EPICS Channel Access Gateway.
 
-License
--------
+Note that there is a non-instance specific part which is only needed once for
+each host acting as a Channel Access gateway and an instance-specific part
+which is needed for each instance of the gateway. The general part can be found
+in class epics_gateway whereas epics_gateway::gateway needs to be instantiated
+for each gateway instance that should be run on the managed machine.
 
+Examples that require multiple gateway instances on a single machine include:
+
+a) A gateway machine providing access to an accelerator network as well as to
+   an experimental network from the office network (three networks).
+b) A gateway machine that provides access back and forth between an
+   accelerator network and an experimental network (thus acting as a forward
+   and reverse gateway).
 
 Contact
 -------

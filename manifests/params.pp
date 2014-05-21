@@ -1,3 +1,5 @@
+# default parameters for classes epics_gateway and epics_gateway::gateway
+#
 class epics_gateway::params {
   $package_ensure = 'present'
   $service_enable = true

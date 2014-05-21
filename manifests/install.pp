@@ -1,3 +1,5 @@
+# Install software needed to run one or more cagateways
+#
 class epics_gateway::install(
   $package_name   = $epics_gateway::params::package_name,
   $package_ensure = $epics_gateway::params::package_ensure,
@@ -10,7 +12,7 @@ class epics_gateway::install(
   }
 
   package { 'EPICS Channel Access Gateway':
-    name   => $package_name,
     ensure => $package_ensure,
+    name   => $package_name,
   }
 }

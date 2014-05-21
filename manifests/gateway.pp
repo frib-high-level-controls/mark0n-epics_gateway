@@ -1,3 +1,5 @@
+# Configure all instance-specific things.
+#
 define epics_gateway::gateway(
   $service_ensure = $epics_gateway::params::service_ensure,
   $service_enable = $epics_gateway::params::service_enable,
@@ -85,11 +87,11 @@ define epics_gateway::gateway(
 
   if $service_manage == true {
     service { "EPICS Channel Access Gateway ${name}":
-      name       => "cagateway-${name}",
       ensure     => $service_ensure,
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => true,
+      name       => "cagateway-${name}",
       require    => File["/var/run/cagateway-${name}"],
       subscribe  => [
         File["/etc/init.d/cagateway-${name}"],

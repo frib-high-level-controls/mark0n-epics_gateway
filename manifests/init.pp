@@ -1,30 +1,49 @@
 # == Class: epics_gateway
 #
-# Installs and configures the EPICS Channel Access Gateway
+# Installs and configures the EPICS Channel Access Gateway. This class manages
+# the non-instance specific part which is only needed once whereas
+# epics_gateway::gateway should be run for each gateway instance running on the
+# managed machine. Examples that might require multiple gateway instances on
+# a single machine include
 #
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# a) A gateway machine providing access to an accelerator network as well as to
+#    an experimental network from the office network.
+# b) A gateway machine that provides access back and forth between an
+#    accelerator network and an experimental network (thus acting as a forward
+#    and reverse gateway).
 #
 # === Examples
+# Make PVs from 192.168.1.xxx and 192.168.2.xxx available on 192.168.3.xxx:
 #
-#  class { epics_gateway:
-#  }
+# class { 'epics_gateway':
+#   require => Apt::Source['controls_repo'],
+# }
+#
+# vcsrepo { '/etc/epics/cagateway-192.168.1.xxx':
+#   ...
+# }
+#
+# vcsrepo { '/etc/epics/cagateway-192.168.2.xxx':
+#   ...
+# }
+#
+# epics_gateway::gateway { '192.168.1.xxx':
+#   server_ip => '192.168.3.1',
+#   client_ip => '192.168.1.255',
+#   require   => Package['ioclogserver'],
+#   subscribe => [
+#     Vcsrepo['/etc/epics/cagateway-192.168.1.xxx'],
+#   ],
+# }
+#
+# epics_gateway::gateway { '192.168.2.xxx':
+#   server_ip => '192.168.3.1',
+#   client_ip => '192.168.2.255',
+#   require   => Package['ioclogserver'],
+#   subscribe => [
+#     Vcsrepo['/etc/epics/cagateway-192.168.2.xxx'],
+#   ],
+# }
 #
 # === Authors
 #
