@@ -82,7 +82,7 @@ case "$1" in
         ;;
   stop)
         echo -n "Stopping $DESC: "
-        start-stop-daemon --stop --pidfile /var/run/${NAME}/pid --user "$USER"--exec $PROCSERV
+        start-stop-daemon --stop --pidfile /var/run/${NAME}/pid --user "$USER" --exec $PROCSERV
         rm -f /var/run/$NAME.pid
         echo "$NAME."
         ;;
