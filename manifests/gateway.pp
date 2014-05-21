@@ -5,6 +5,8 @@ define epics_gateway::gateway(
   $console_port   = $epics_gateway::params::console_port,
   $server_ip      = undef,
   $client_ip      = undef,
+  $server_port    = $epics_gateway::params::server_port,
+  $client_port    = $epics_gateway::params::client_port,
   $ignore_ips     = [$server_ip],
   $gw_params      = $epics_gateway::params::gw_params,
   $home_dir       = $epics_gateway::params::home_dir,
@@ -43,6 +45,14 @@ define epics_gateway::gateway(
 
   if !is_ip_address($client_ip) {
     fail('client_ip is not a valid ip address')
+  }
+
+  if !is_integer($server_port) or $server_port < 0 or $server_port > 65535 {
+    fail('server_port is not a valid port number')
+  }
+
+  if !is_integer($client_port) or $client_port < 0 or $client_port > 65535 {
+    fail('client_port is not a valid port number')
   }
 
   if !is_integer($caputlog_port) or $caputlog_port < 0 or $caputlog_port > 65535 {

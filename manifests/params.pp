@@ -4,6 +4,8 @@ class epics_gateway::params {
   $service_ensure = 'running'
   $service_manage = true
   $console_port   = 4051
+  $server_port    = 5064
+  $client_port    = 5064
   $gw_params      = ''
   $home_dir       = '/var/run/${NAME}'
   $pv_list        = '/etc/epics/${NAME}/pvlist'

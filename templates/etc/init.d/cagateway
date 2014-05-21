@@ -14,12 +14,17 @@ NAME=$(basename $0)
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 PROCSERV=/usr/bin/procServ
 GATEWAY=/usr/bin/cagateway
-PREFIX="gateway2"
 
-test -x $DAEMON || exit 0
+test -x $PROCSERV || exit 0
+test -x $GATEWAY || exit 0
 
 set -e
- 
+
+# default values
+SERVER_PORT=5064
+CLIENT_PORT=5064
+PREFIX="gateway2"
+
 . /lib/lsb/init-functions
 
 if test -f /etc/default/$NAME; then
@@ -56,7 +61,7 @@ else
   CAPUTLOG_OPT=''
 fi
 
-GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE $COMMAND_FILE_OPT $ARCHIVE_OPT $NO_CACHE_OPT $CAPUTLOG_OPT -log $LOG_FILE -prefix $PREFIX $PARAMS"
+GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -sport $SERVER_PORT -cport $CLIENT_PORT -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE $COMMAND_FILE_OPT $ARCHIVE_OPT $NO_CACHE_OPT $CAPUTLOG_OPT -log $LOG_FILE -prefix $PREFIX $PARAMS"
 PROCSERV_OPTS="--quiet --pidfile /var/run/${NAME}/pid"
 
 check_status() {
