@@ -8,7 +8,7 @@ HOME_DIR="<%= @home_dir %>"
 PV_LIST_FILE="<%= @pv_list %>"
 ACCESS_SECURITY_FILE="<%= @access_file %>"
 COMMAND_FILE="<%= @command_file %>"
-LOG_FILE="/var/log/cagateway/${NAME}.log"
+LOG_FILE="<%= @log_file %>"
 PROCSERV_PORT=<%= @console_port %>
 ARCHIVE=<%= @archive %>
 NO_CACHE=<%= @no_cache %>

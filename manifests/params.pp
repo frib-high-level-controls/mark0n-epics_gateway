@@ -11,6 +11,7 @@ class epics_gateway::params {
   $pv_list        = '/etc/epics/${NAME}/pvlist'
   $access_file    = '/etc/epics/${NAME}/access'
   $command_file   = '/etc/epics/${NAME}/command'
+  $log_file       = '/var/log/cagateway/${NAME}.log'
   $archive        = true
   $no_cache       = true
   $caputlog       = false

@@ -13,6 +13,7 @@ define epics_gateway::gateway(
   $pv_list        = $epics_gateway::params::pv_list,
   $access_file    = $epics_gateway::params::access_file,
   $command_file   = $epics_gateway::params::command_file,
+  $log_file       = $epics_gateway::params::log_file,
   $archive        = $epics_gateway::params::archive,
   $no_cache       = $epics_gateway::params::no_cache,
   $caputlog       = $epics_gateway::params::caputlog,
@@ -26,6 +27,7 @@ define epics_gateway::gateway(
   validate_string($client_ip)
   validate_array($ignore_ips)
   validate_string($gw_params)
+  validate_string($log_file)
   validate_bool($archive)
   validate_bool($no_cache)
   validate_bool($caputlog)
