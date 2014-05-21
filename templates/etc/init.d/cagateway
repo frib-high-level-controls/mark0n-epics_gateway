@@ -26,11 +26,31 @@ if test -f /etc/default/$NAME; then
     . /etc/default/$NAME
 fi
 
-echo $SERVER_IP
-export LOG_FILE
+if [ -n "$COMMAND_FILE" ]
+then
+  COMMAND_FILE_OPT="-command $COMMAND_FILE"
+else
+  COMMAND_FILE_OPT=''
+fi
 
-GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE -archive -no_cache -log $LOG_FILE -prefix $PREFIX -caputlog localhost:7004 <%= @gw_params %>"
-PROCSERV_OPTS="--quiet --pidfile /var/run/$NAME.pid"
+ARCHIVE_LOWERCASE=`echo $ARCHIVE | tr '[:upper:]' '[:lower:]'`
+if [ "$ARCHIVE_LOWERCASE" = "true" ] || [ "$ARCHIVE_LOWERCASE" = "yes" ]
+then
+  ARCHIVE_OPT='-archive'
+else
+  ARCHIVE_OPT=''
+fi
+
+NO_CACHE_LOWERCASE=`echo $NO_CACHE | tr '[:upper:]' '[:lower:]'`
+if [ "$NO_CACHE_LOWERCASE" = "true" ] || [ "$NO_CACHE_LOWERCASE" = "yes" ]
+then
+  NO_CACHE_OPT='-no_cache'
+else
+  NO_CACHE_OPT=''
+fi
+
+GATEWAY_OPTS="-sip $SERVER_IP -cip $CLIENT_IP -signore $IGNORE_IPS -home $HOME_DIR -pvlist $PV_LIST_FILE -access $ACCESS_SECURITY_FILE $COMMAND_FILE_OPT $ARCHIVE_OPT $NO_CACHE_OPT -log $LOG_FILE -prefix $PREFIX $PARAMS"
+PROCSERV_OPTS="--quiet --pidfile /var/run/${NAME}/pid"
 
 check_status() {
   if [ "$1" = "-q" ];then
@@ -44,12 +64,12 @@ check_status() {
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-        start-stop-daemon --start --pidfile /var/run/$NAME.pid --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
+        start-stop-daemon --start --pidfile /var/run/${NAME}/pid --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
         echo "$NAME."
         ;;
   stop)
         echo -n "Stopping $DESC: "
-        start-stop-daemon --stop --pidfile /var/run/$NAME.pid --exec $PROCSERV
+        start-stop-daemon --stop --pidfile /var/run/${NAME}/pid --exec $PROCSERV
         rm -f /var/run/$NAME.pid
         echo "$NAME."
         ;;
@@ -60,10 +80,10 @@ case "$1" in
         ;;
   restart|force-reload)
         echo -n "Restarting $DESC: "
-        start-stop-daemon --stop --pidfile /var/run/$NAME.pid --exec $PROCSERV
+        start-stop-daemon --stop --pidfile /var/run/${NAME}/pid --exec $PROCSERV
         rm -f /var/run/$NAME.pid
         sleep 1
-        start-stop-daemon --start --pidfile /var/run/$NAME.pid --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
+        start-stop-daemon --start --pidfile /var/run/${NAME}/pid --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
         echo "$NAME."
         ;;
   *)

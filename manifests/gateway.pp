@@ -10,7 +10,9 @@ define epics_gateway::gateway(
   $home_dir       = $epics_gateway::params::home_dir,
   $pv_list        = $epics_gateway::params::pv_list,
   $access_file    = $epics_gateway::params::access_file,
-  $cmd_file       = $epics_gateway::params::cmd_file,
+  $command_file   = $epics_gateway::params::command_file,
+  $archive        = $epics_gateway::params::archive,
+  $no_cache       = $epics_gateway::params::no_cache,
 ) {
   validate_string($service_ensure)
   validate_bool($service_enable)
@@ -19,6 +21,8 @@ define epics_gateway::gateway(
   validate_string($client_ip)
   validate_array($ignore_ips)
   validate_string($gw_params)
+  validate_bool($archive)
+  validate_bool($no_cache)
 
   if !($service_ensure in [ 'running', 'stopped' ]) {
     fail('service_ensure parameter must be running or stopped')
@@ -50,6 +54,12 @@ define epics_gateway::gateway(
     mode    => '0755',
   }
 
+  file { "/var/run/cagateway-${name}":
+    ensure  => directory,
+    owner   => 'root',
+    mode    => '0755',
+  }
+
   if $service_manage == true {
     service { "EPICS Channel Access Gateway ${name}":
       name       => "cagateway-${name}",
@@ -57,6 +67,7 @@ define epics_gateway::gateway(
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => true,
+      require    => File["/var/run/cagateway-${name}"],
       subscribe  => [
         File["/etc/init.d/cagateway-${name}"],
         File["/etc/default/cagateway-${name}"],

@@ -5,10 +5,12 @@ class epics_gateway::params {
   $service_manage = true
   $console_port   = 4051
   $gw_params      = ''
-  $home_dir       = undef
-  $pv_list        = 'GATEWAY.pvlist'
-  $access_file    = 'GATEWAY.access'
-  $cmd_file       = 'GATEWAY.command'
+  $home_dir       = '/var/run/${NAME}'
+  $pv_list        = '/etc/epics/${NAME}/pvlist'
+  $access_file    = '/etc/epics/${NAME}/access'
+  $command_file   = '/etc/epics/${NAME}/command'
+  $archive        = true
+  $no_cache       = true
 
   case $::osfamily {
     'Debian': {
