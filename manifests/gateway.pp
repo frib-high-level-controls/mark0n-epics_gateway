@@ -73,10 +73,8 @@ define epics_gateway::gateway(
   }
 
   file { "/etc/init.d/cagateway-${name}":
-    ensure  => file,
-    content => template("${module_name}/etc/init.d/cagateway"),
-    owner   => 'root',
-    mode    => '0755',
+    ensure => link,
+    target => '/etc/init.d/cagateway',
   }
 
   file { "/var/run/cagateway-${name}":
