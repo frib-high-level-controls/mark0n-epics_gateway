@@ -15,4 +15,16 @@ class epics_gateway::install(
     ensure => $package_ensure,
     name   => $package_name,
   }
+
+  if !defined(Package['sed']) {
+    package { 'sed':
+      ensure => installed,
+    }
+  }
+
+  if !defined(Package['procps']) {
+    package { 'procps':
+      ensure => installed,
+    }
+  }
 }
