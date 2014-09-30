@@ -1,7 +1,7 @@
 # Configure all non-instance specific things.
 #
 class epics_gateway::config() {
-  file { "/etc/init.d/cagateway":
+  file { '/etc/init.d/cagateway':
     ensure => file,
     source => "puppet:///modules/${module_name}/etc/init.d/cagateway",
     owner  => 'root',

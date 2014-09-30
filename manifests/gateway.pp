@@ -78,9 +78,9 @@ define epics_gateway::gateway(
   }
 
   file { "/var/run/cagateway-${name}":
-    ensure  => directory,
-    owner   => 'cagateway',
-    mode    => '0755',
+    ensure => directory,
+    owner  => 'cagateway',
+    mode   => '0755',
   }
 
   if $service_manage == true {
