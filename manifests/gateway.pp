@@ -97,11 +97,4 @@ define epics_gateway::gateway(
       ],
     }
   }
-
-  file { "/usr/local/bin/cagateway-${name}-report.sh":
-    ensure  => file,
-    content => template("${module_name}/usr/local/bin/cagateway-report.sh"),
-    owner   => 'root',
-    mode    => '0755',
-  }
 }

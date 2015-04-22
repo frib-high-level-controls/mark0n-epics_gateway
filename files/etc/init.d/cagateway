@@ -91,12 +91,18 @@ case "$1" in
         check_status
         exit $?
         ;;
-  restart|force-reload)
+  restart)
         echo -n "Restarting $DESC: "
         start-stop-daemon --stop --pidfile /var/run/${NAME}/pid --user "$USER" --exec $PROCSERV
         rm -f /var/run/$NAME.pid
         sleep 1
         start-stop-daemon --start --pidfile /var/run/${NAME}/pid --chuid "$USER" --exec $PROCSERV -- $PROCSERV_OPTS $PROCSERV_PORT $GATEWAY $GATEWAY_OPTS
+        echo "$NAME."
+        ;;
+  reload|force-reload)
+        echo -n "Reloading $DESC: "
+        GATEWAYPID=$(grep 'kill -USR1' /var/run/${NAME}/gateway.killer | sed 's/.*kill -USR1 \(.*\)/\1/g')
+        kill -USR1 $GATEWAYPID
         echo "$NAME."
         ;;
   *)

@@ -16,12 +16,16 @@ class epics_gateway::install(
     name   => $package_name,
   }
 
+  # init script uses sed for extracting the PID of the gateway process from its
+  # "kill" file
   if !defined(Package['sed']) {
     package { 'sed':
       ensure => installed,
     }
   }
 
+  # init script uses kill command to trigger a reload of the access security
+  # files
   if !defined(Package['procps']) {
     package { 'procps':
       ensure => installed,
