@@ -9,13 +9,13 @@ define epics_gateway::gateway(
   $client_ip      = undef,
   $server_port    = $epics_gateway::params::server_port,
   $client_port    = $epics_gateway::params::client_port,
-  $ignore_ips     = [$server_ip],
+  $ignore_ips     = [],
   $gw_params      = $epics_gateway::params::gw_params,
-  $home_dir       = $epics_gateway::params::home_dir,
-  $pv_list        = $epics_gateway::params::pv_list,
-  $access_file    = $epics_gateway::params::access_file,
-  $command_file   = $epics_gateway::params::command_file,
-  $log_file       = $epics_gateway::params::log_file,
+  $home_dir       = "/var/run/cagateway-${name}",
+  $pv_list        = "/etc/epics/cagateway/${name}/pvlist",
+  $access_file    = "/etc/epics/cagateway/${name}/access",
+  $command_file   = "/etc/epics/cagateway/${name}/command",
+  $log_file       = "/var/log/cagateway/${name}.log",
   $archive        = $epics_gateway::params::archive,
   $no_cache       = $epics_gateway::params::no_cache,
   $caputlog       = $epics_gateway::params::caputlog,
@@ -30,6 +30,7 @@ define epics_gateway::gateway(
   validate_string($client_ip)
   validate_array($ignore_ips)
   validate_string($gw_params)
+  validate_absolute_path($home_dir)
   validate_string($log_file)
   validate_bool($archive)
   validate_bool($no_cache)
@@ -65,16 +66,13 @@ define epics_gateway::gateway(
     fail('caputlog_port is not a valid port number')
   }
 
-  file { "/etc/default/cagateway-${name}":
-    ensure  => file,
-    content => template("${module_name}/etc/default/cagateway"),
+  file { "/etc/systemd/system/cagateway-${name}.service":
+    ensure => file,
+    content => template("${module_name}/etc/systemd/system/cagateway.service"),
     owner   => 'root',
+    group   => 'root',
     mode    => '0644',
-  }
-
-  file { "/etc/init.d/cagateway-${name}":
-    ensure => link,
-    target => '/etc/init.d/cagateway',
+    notify  => Exec['reload systemd configuration'],
   }
 
   file { "/var/run/cagateway-${name}":
@@ -92,8 +90,7 @@ define epics_gateway::gateway(
       name       => "cagateway-${name}",
       require    => File["/var/run/cagateway-${name}"],
       subscribe  => [
-        File["/etc/init.d/cagateway-${name}"],
-        File["/etc/default/cagateway-${name}"],
+        Exec['reload systemd configuration'],
       ],
     }
   }

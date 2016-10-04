@@ -9,11 +9,6 @@ class epics_gateway::params {
   $server_port    = 5064
   $client_port    = 5064
   $gw_params      = ''
-  $home_dir       = "/var/run/\${NAME}"
-  $pv_list        = "/etc/epics/\${NAME}/pvlist"
-  $access_file    = "/etc/epics/\${NAME}/access"
-  $command_file   = "/etc/epics/\${NAME}/command"
-  $log_file       = "/var/log/cagateway/\${NAME}.log"
   $archive        = true
   $no_cache       = true
   $caputlog       = false

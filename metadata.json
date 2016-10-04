@@ -1,0 +1,15 @@
+{
+  "name": "frib-epics_gateway",
+  "version": "1.0.0",
+  "author": "Martin Konrad",
+  "summary": "Puppet module for EPICS Channel Access Gatway",
+  "description": "Module for installation and configuration of EPICS Channel Access Gateways.",
+  "license": "Apache-2.0",
+  "source": "https://stash.nscl.msu.edu/scm/deploy/puppet_module_epics_gateway.git",
+  "project_page": "https://stash.nscl.msu.edu/projects/DEPLOY/repos/puppet_module_epics_gateway",
+  "issues_url": null,
+  "dependencies": [
+    {"name":"puppetlabs-stdlib"}
+  ],
+  "data_provider": null
+}

@@ -1,0 +1,12 @@
+[Unit]
+Description=EPICS Channel Access Gateway <%= @name %>
+Requires=network.target
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/cagateway -cip <%= @client_ip %> -sip <%= @server_ip %> <% if not @ignore_ips.empty? -%>-signore <%= @ignore_ips.join(',') %> <% end -%>-cport <%= @client_port %> -sport <%= @server_port %> -home <%= @home_dir %> -pvlist <%= @pv_list %> -access "<%= @access_file %>" -command "<%= @command_file %>" <% if @archive -%>-archive <% end -%><% if @no_cache -%>-no_cache<% end %>
+Restart=always
+User=<%= @user %>
+
+[Install]
+WantedBy=multi-user.target
