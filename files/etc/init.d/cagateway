@@ -57,7 +57,7 @@ fi
 
 if [ -n "$CAPUTLOG_HOST" ] && [ -n "$CAPUTLOG_PORT" ]
 then
-  CAPUTLOG_OPT="-caputlog ${CAPUTLOG_HOST}:$CAPUTLOG_PORT"
+  CAPUTLOG_OPT="-putlog ${CAPUTLOG_HOST}:$CAPUTLOG_PORT"
 else
   CAPUTLOG_OPT=''
 fi
