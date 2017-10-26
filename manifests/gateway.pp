@@ -70,7 +70,7 @@ define epics_gateway::gateway(
     fail('caputlog_port is not a valid port number')
   }
 
-  if $cas_beacon_auto_addr_list {
+  if $cas_beacon_auto_addr_list != undef {
     validate_bool($cas_beacon_auto_addr_list)
     $cas_beacon_auto_list_str = $cas_beacon_auto_addr_list ? {
       true  => 'YES',
