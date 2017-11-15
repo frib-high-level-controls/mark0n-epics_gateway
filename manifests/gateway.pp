@@ -25,6 +25,7 @@ define epics_gateway::gateway(
   $caputlog_host             = $epics_gateway::params::caputlog_host,
   $caputlog_port             = $epics_gateway::params::caputlog_port,
   $prefix                    = $epics_gateway::params::prefix,
+  $debug                     = 0,
 ) {
   validate_string($service_ensure)
   validate_bool($service_enable)
