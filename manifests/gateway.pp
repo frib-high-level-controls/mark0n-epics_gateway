@@ -14,7 +14,7 @@ define epics_gateway::gateway(
   $cas_beacon_addr_list      = undef,
   $env_vars                  = {},
   $gw_params                 = $epics_gateway::params::gw_params,
-  $home_dir                  = "/var/run/${name}",
+  $home_dir                  = "/var/lib/${name}",
   $pv_list                   = "/etc/epics/cagateway/${name}/pvlist",
   $access_file               = "/etc/epics/cagateway/${name}/access",
   $command_file              = "/etc/epics/cagateway/${name}/command",
@@ -98,7 +98,7 @@ define epics_gateway::gateway(
     notify  => Exec['reload systemd configuration'],
   }
 
-  file { "/var/run/${name}":
+  file { $home_dir:
     ensure => directory,
     owner  => 'cagateway',
     mode   => '0755',
@@ -110,8 +110,8 @@ define epics_gateway::gateway(
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => true,
-      name       => "${name}",
-      require    => File["/var/run/${name}"],
+      name       => $name,
+      require    => File[$home_dir],
       subscribe  => [
         Exec['reload systemd configuration'],
       ],
