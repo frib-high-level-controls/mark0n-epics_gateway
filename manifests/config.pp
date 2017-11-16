@@ -1,7 +1,7 @@
 # Configure all non-instance specific things.
 #
 class epics_gateway::config() {
-  user { 'cagateway':
+  user { $epics_gateway::user:
     ensure  => present,
     system  => true,
     require => Class['::epics_gateway::install'],
@@ -9,7 +9,7 @@ class epics_gateway::config() {
 
   file { '/var/log/cagateway':
     ensure => directory,
-    owner  => 'cagateway',
+    owner  => $epics_gateway::user,
     mode   => '0755',
   }
 }

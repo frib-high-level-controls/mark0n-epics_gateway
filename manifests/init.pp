@@ -60,6 +60,7 @@ class epics_gateway(
   $service_enable = $epics_gateway::params::service_enable,
   $service_ensure = $epics_gateway::params::service_ensure,
   $service_name   = $epics_gateway::params::service_name,
+  $user           = $epics_gateway::params::user,
 ) inherits epics_gateway::params {
   class { '::epics_gateway::install':
     package_name   => $package_name,

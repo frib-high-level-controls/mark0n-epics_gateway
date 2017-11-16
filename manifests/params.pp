@@ -16,6 +16,7 @@ class epics_gateway::params {
   $caputlog_port  = 7004
   $tmp            = "\${NAME}"
   $prefix         = "${::hostname}-${tmp}"
+  $user           = 'cagateway'
 
   case $::osfamily {
     'Debian': {
