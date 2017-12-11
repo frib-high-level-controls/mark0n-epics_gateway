@@ -7,7 +7,7 @@ After=network.target
 <% @real_env_vars.each_pair do |key, val| -%>
 Environment="<%= key %>=<%= val %>"
 <% end -%>
-ExecStart=/usr/bin/cagateway -cip '<%= @client_ip.join(' ') %>' -sip <%= @server_ip %> <% if not @ignore_ips.empty? -%>-signore <%= @ignore_ips.join(',') %> <% end -%>-cport <%= @client_port %> -sport <%= @server_port %> -home <%= @home_dir %> -pvlist <%= @pv_list %> -access "<%= @access_file %>" -command "<%= @command_file %>" <% if @archive -%>-archive <% end -%><% if @no_cache -%>-no_cache -debug <%= @debug %><% end %>
+ExecStart=/usr/bin/cagateway -cip '<%= @client_ip.join(' ') %>' -sip <%= @server_ip %> <% if not @ignore_ips.empty? -%>-signore '<%= @ignore_ips.join(' ') %>' <% end -%>-cport <%= @client_port %> -sport <%= @server_port %> -home <%= @home_dir %> -pvlist <%= @pv_list %> -access "<%= @access_file %>" -command "<%= @command_file %>" <% if @archive -%>-archive <% end -%><% if @no_cache -%>-no_cache -debug <%= @debug %><% end %>
 Restart=always
 User=<%= scope['epics_gateway::user'] %>
 
