@@ -6,10 +6,10 @@ define epics_gateway::gateway(
   $service_manage            = $epics_gateway::params::service_manage,
   $console_port              = $epics_gateway::params::console_port,
   $server_ip                 = undef,
-  $client_ip                 = undef,
+  Array[String] $client_ip   = [],
   $server_port               = $epics_gateway::params::server_port,
   $client_port               = $epics_gateway::params::client_port,
-  $ignore_ips                = [],
+  Array[String] $ignore_ips  = [],
   $cas_beacon_auto_addr_list = undef,
   $cas_beacon_addr_list      = undef,
   $env_vars                  = {},
@@ -31,8 +31,6 @@ define epics_gateway::gateway(
   validate_bool($service_enable)
   validate_bool($service_manage)
   validate_string($server_ip)
-  validate_string($client_ip)
-  validate_array($ignore_ips)
   validate_string($gw_params)
   validate_absolute_path($home_dir)
   validate_string($log_file)
@@ -53,10 +51,6 @@ define epics_gateway::gateway(
 
   if !is_ip_address($server_ip) {
     fail('server_ip is not a valid ip address')
-  }
-
-  if !is_ip_address($client_ip) {
-    fail('client_ip is not a valid ip address')
   }
 
   if !is_integer($server_port) or $server_port < 0 or $server_port > 65535 {
