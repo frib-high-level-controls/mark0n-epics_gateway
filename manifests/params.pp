@@ -17,6 +17,7 @@ class epics_gateway::params {
   $tmp            = "\${NAME}"
   $prefix         = "${::hostname}-${tmp}"
   $user           = 'cagateway'
+  $debug          = 0
 
   case $::osfamily {
     'Debian': {
