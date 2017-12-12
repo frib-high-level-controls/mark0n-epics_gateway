@@ -55,12 +55,12 @@
 # Michigan State University, East-Lansing, MI, USA
 #
 class epics_gateway(
-  $package_name   = $epics_gateway::params::package_name,
-  $package_ensure = $epics_gateway::params::package_ensure,
-  $service_enable = $epics_gateway::params::service_enable,
-  $service_ensure = $epics_gateway::params::service_ensure,
-  $service_name   = $epics_gateway::params::service_name,
-  $user           = $epics_gateway::params::user,
+  String $package_name    = $epics_gateway::params::package_name,
+  String $package_ensure  = $epics_gateway::params::package_ensure,
+  Boolean $service_enable = $epics_gateway::params::service_enable,
+  String $service_ensure  = $epics_gateway::params::service_ensure,
+  String $service_name    = $epics_gateway::params::service_name,
+  String $user            = $epics_gateway::params::user,
 ) inherits epics_gateway::params {
   class { '::epics_gateway::install':
     package_name   => $package_name,
