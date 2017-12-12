@@ -1,31 +1,31 @@
 # Configure all instance-specific things.
 #
 define epics_gateway::gateway(
-  $service_ensure            = $epics_gateway::params::service_ensure,
-  $service_enable            = $epics_gateway::params::service_enable,
-  $service_manage            = $epics_gateway::params::service_manage,
-  $console_port              = $epics_gateway::params::console_port,
-  $server_ip                 = undef,
-  Array[String] $client_ip   = [],
-  $server_port               = $epics_gateway::params::server_port,
-  $client_port               = $epics_gateway::params::client_port,
-  Array[String] $ignore_ips  = [],
-  $cas_beacon_auto_addr_list = undef,
-  $cas_beacon_addr_list      = undef,
-  $env_vars                  = {},
-  $gw_params                 = $epics_gateway::params::gw_params,
-  $home_dir                  = "/var/lib/${name}",
-  $pv_list                   = "/etc/epics/cagateway/${name}/pvlist",
-  $access_file               = "/etc/epics/cagateway/${name}/access",
-  $command_file              = "/etc/epics/cagateway/${name}/command",
-  $log_file                  = "/var/log/cagateway/${name}.log",
-  $archive                   = $epics_gateway::params::archive,
-  $no_cache                  = $epics_gateway::params::no_cache,
-  $caputlog                  = $epics_gateway::params::caputlog,
-  $caputlog_host             = $epics_gateway::params::caputlog_host,
-  $caputlog_port             = $epics_gateway::params::caputlog_port,
-  $prefix                    = $epics_gateway::params::prefix,
-  $debug                     = 0,
+  $service_ensure                     = $epics_gateway::params::service_ensure,
+  $service_enable                     = $epics_gateway::params::service_enable,
+  $service_manage                     = $epics_gateway::params::service_manage,
+  $console_port                       = $epics_gateway::params::console_port,
+  $server_ip                          = undef,
+  Array[String] $client_ip            = [],
+  $server_port                        = $epics_gateway::params::server_port,
+  $client_port                        = $epics_gateway::params::client_port,
+  Array[String] $ignore_ips           = [],
+  $cas_beacon_auto_addr_list          = undef,
+  Array[String] $cas_beacon_addr_list = [],
+  $env_vars                           = {},
+  $gw_params                          = $epics_gateway::params::gw_params,
+  $home_dir                           = "/var/lib/${name}",
+  $pv_list                            = "/etc/epics/cagateway/${name}/pvlist",
+  $access_file                        = "/etc/epics/cagateway/${name}/access",
+  $command_file                       = "/etc/epics/cagateway/${name}/command",
+  $log_file                           = "/var/log/cagateway/${name}.log",
+  $archive                            = $epics_gateway::params::archive,
+  $no_cache                           = $epics_gateway::params::no_cache,
+  $caputlog                           = $epics_gateway::params::caputlog,
+  $caputlog_host                      = $epics_gateway::params::caputlog_host,
+  $caputlog_port                      = $epics_gateway::params::caputlog_port,
+  $prefix                             = $epics_gateway::params::prefix,
+  $debug                              = 0,
 ) {
   validate_string($service_ensure)
   validate_bool($service_enable)
@@ -77,8 +77,7 @@ define epics_gateway::gateway(
   }
 
   if $cas_beacon_addr_list {
-    validate_string($cas_beacon_addr_list)
-    $real_env_vars = merge($env_vars2, {'EPICS_CAS_BEACON_ADDR_LIST' => $cas_beacon_addr_list})
+    $real_env_vars = merge($env_vars2, {'EPICS_CAS_BEACON_ADDR_LIST' => join($cas_beacon_addr_list, " ")})
   } else {
     $real_env_vars = $env_vars2
   }
