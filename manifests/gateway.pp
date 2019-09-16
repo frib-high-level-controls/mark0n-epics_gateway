@@ -1,11 +1,11 @@
 # Configure all instance-specific things.
 #
 define epics_gateway::gateway(
+  String $server_ip,
   String $service_ensure                       = $epics_gateway::params::service_ensure,
   Boolean $service_enable                      = $epics_gateway::params::service_enable,
   Boolean $service_manage                      = $epics_gateway::params::service_manage,
   Integer[1,65535] $console_port               = $epics_gateway::params::console_port,
-  String $server_ip,
   Array[String] $client_ip                     = [],
   Integer[1,65535] $server_port                = $epics_gateway::params::server_port,
   Integer[1,65535] $client_port                = $epics_gateway::params::client_port,
@@ -49,13 +49,13 @@ define epics_gateway::gateway(
   }
 
   if $cas_beacon_addr_list {
-    $real_env_vars = merge($env_vars2, {'EPICS_CAS_BEACON_ADDR_LIST' => join($cas_beacon_addr_list, " ")})
+    $real_env_vars = merge($env_vars2, {'EPICS_CAS_BEACON_ADDR_LIST' => join($cas_beacon_addr_list, ' ')})
   } else {
     $real_env_vars = $env_vars2
   }
 
   file { "/etc/systemd/system/${name}.service":
-    ensure => file,
+    ensure  => file,
     content => template("${module_name}/etc/systemd/system/cagateway.service"),
     owner   => 'root',
     group   => 'root',
