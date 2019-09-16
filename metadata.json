@@ -1,11 +1,12 @@
 {
-  "name": "frib-epics_gateway",
+  "name": "mark0n-epics_gateway",
   "version": "1.0.0",
   "author": "Martin Konrad",
   "summary": "Puppet module for EPICS Channel Access Gatway",
   "license": "Apache-2.0",
   "source": "https://stash.nscl.msu.edu/scm/deploy/puppet_module_epics_gateway.git",
   "project_page": "https://stash.nscl.msu.edu/projects/DEPLOY/repos/puppet_module_epics_gateway",
+  "issues_url": "https://github.com/frib-high-level-controls/mark0n-epics_gateway/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib"
@@ -13,45 +14,10 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "CentOS",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "8"
-      ]
-    },
-    {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "9"
-      ]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [
-        "18.04"
-      ]
-    },
-    {
-      "operatingsystem": "windows",
-      "operatingsystemrelease": [
-        "2019",
+        "8",
+        "9",
         "10"
       ]
     }
@@ -59,7 +25,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 7.0.0"
+      "version_requirement": ">= 5.5.0 < 7.0.0"
     }
   ],
   "description": "Module for installation and configuration of EPICS Channel Access Gateways.",
