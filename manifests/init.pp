@@ -1,11 +1,11 @@
 # Configure the system-wide stuff like installing packages etc.
 #
 class epics_gateway(
-  String $package_name    = $epics_gateway::params::package_name,
-  String $package_ensure  = $epics_gateway::params::package_ensure,
-  Boolean $service_enable = $epics_gateway::params::service_enable,
-  String $service_ensure  = $epics_gateway::params::service_ensure,
-  String $user            = $epics_gateway::params::user,
+  String $package_name                     = $epics_gateway::params::package_name,
+  String $package_ensure                   = $epics_gateway::params::package_ensure,
+  Boolean $service_enable                  = $epics_gateway::params::service_enable,
+  Stdlib::Ensure::Service $service_ensure  = $epics_gateway::params::service_ensure,
+  String $user                             = $epics_gateway::params::user,
 ) inherits epics_gateway::params {
   class { '::epics_gateway::install':
     package_name   => $package_name,

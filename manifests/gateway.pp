@@ -1,43 +1,32 @@
 # Configure all instance-specific things.
 #
 define epics_gateway::gateway(
-  String $server_ip,
-  String $service_ensure                       = $epics_gateway::params::service_ensure,
-  Boolean $service_enable                      = $epics_gateway::params::service_enable,
-  Boolean $service_manage                      = $epics_gateway::params::service_manage,
-  Integer[1,65535] $console_port               = $epics_gateway::params::console_port,
-  Array[String] $client_ip                     = [],
-  Integer[1,65535] $server_port                = $epics_gateway::params::server_port,
-  Integer[1,65535] $client_port                = $epics_gateway::params::client_port,
-  Array[String] $ignore_ips                    = [],
-  Optional[Boolean] $cas_beacon_auto_addr_list = undef,
-  Array[String] $cas_beacon_addr_list          = [],
-  Hash[String, String] $env_vars               = {},
-  String $gw_params                            = $epics_gateway::params::gw_params,
-  String $home_dir                             = "/var/lib/${name}",
-  String $pv_list                              = "/etc/epics/cagateway/${name}/pvlist",
-  String $access_file                          = "/etc/epics/cagateway/${name}/access",
-  String $command_file                         = "/etc/epics/cagateway/${name}/command",
-  String $log_file                             = "/var/log/cagateway/${name}.log",
-  Boolean $archive                             = $epics_gateway::params::archive,
-  Boolean $no_cache                            = $epics_gateway::params::no_cache,
-  Boolean $caputlog                            = $epics_gateway::params::caputlog,
-  String $caputlog_host                        = $epics_gateway::params::caputlog_host,
-  Integer[1,65535] $caputlog_port              = $epics_gateway::params::caputlog_port,
-  String $prefix                               = $epics_gateway::params::prefix,
-  Integer $debug                               = $epics_gateway::params::debug,
+  Stdlib::IP::Address $server_ip,
+  Stdlib::Ensure::Service $service_ensure          = $epics_gateway::params::service_ensure,
+  Boolean $service_enable                          = $epics_gateway::params::service_enable,
+  Boolean $service_manage                          = $epics_gateway::params::service_manage,
+  Stdlib::Port $console_port                       = $epics_gateway::params::console_port,
+  Array[String] $client_ip                         = [],
+  Stdlib::Port $server_port                        = $epics_gateway::params::server_port,
+  Stdlib::Port $client_port                        = $epics_gateway::params::client_port,
+  Array[Stdlib::IP::Address] $ignore_ips           = [],
+  Optional[Boolean] $cas_beacon_auto_addr_list     = undef,
+  Array[Stdlib::IP::Address] $cas_beacon_addr_list = [],
+  Hash[String, String] $env_vars                   = {},
+  String $gw_params                                = $epics_gateway::params::gw_params,
+  Stdlib::Absolutepath $home_dir                   = "/var/lib/${name}",
+  String $pv_list                                  = "/etc/epics/cagateway/${name}/pvlist",
+  Stdlib::Absolutepath $access_file                = "/etc/epics/cagateway/${name}/access",
+  Stdlib::Absolutepath $command_file               = "/etc/epics/cagateway/${name}/command",
+  Stdlib::Absolutepath $log_file                   = "/var/log/cagateway/${name}.log",
+  Boolean $archive                                 = $epics_gateway::params::archive,
+  Boolean $no_cache                                = $epics_gateway::params::no_cache,
+  Boolean $caputlog                                = $epics_gateway::params::caputlog,
+  Stdlib::Host $caputlog_host                      = $epics_gateway::params::caputlog_host,
+  Stdlib::Port $caputlog_port                      = $epics_gateway::params::caputlog_port,
+  String $prefix                                   = $epics_gateway::params::prefix,
+  Integer $debug                                   = $epics_gateway::params::debug,
 ) {
-  validate_absolute_path($home_dir)
-  validate_hash($env_vars)
-
-  if !($service_ensure in [ 'running', 'stopped' ]) {
-    fail('service_ensure parameter must be running or stopped')
-  }
-
-  if !is_ip_address($server_ip) {
-    fail('server_ip is not a valid ip address')
-  }
-
   if $cas_beacon_auto_addr_list != undef {
     $cas_beacon_auto_list_str = $cas_beacon_auto_addr_list ? {
       true  => 'YES',
