@@ -1,11 +1,11 @@
 {
   "name": "mark0n-epics_gateway",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Martin Konrad",
   "summary": "Puppet module for EPICS Channel Access Gatway",
   "license": "Apache-2.0",
-  "source": "https://stash.nscl.msu.edu/scm/deploy/puppet_module_epics_gateway.git",
-  "project_page": "https://stash.nscl.msu.edu/projects/DEPLOY/repos/puppet_module_epics_gateway",
+  "source": "https://github.com/frib-high-level-controls/mark0n-epics_gateway.git",
+  "project_page": "https://github.com/frib-high-level-controls/mark0n-epics_gateway",
   "issues_url": "https://github.com/frib-high-level-controls/mark0n-epics_gateway/issues",
   "dependencies": [
     {
